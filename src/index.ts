@@ -1,0 +1,30 @@
+import dotenv from "dotenv";
+import { Request, Response } from "express";
+
+import app from "./app";
+import connect from "./common/config/database";
+
+dotenv.config();
+
+app.get("/health", (req: Request, res: Response): any => {
+  return res.status(200).json({
+    status: "status",
+    message: "server is up and running",
+    data: null,
+  });
+});
+
+app.use((req, res, _next) => {
+  res.status(404).json({
+    status: "error",
+    message: "resource not found",
+    path: req.url,
+    method: req.method,
+  });
+});
+
+const PORT = process.env.PORT || 3000;
+app.listen(PORT, async () => {
+  await connect();
+  console.log(`Server running on port ${PORT}`);
+});
