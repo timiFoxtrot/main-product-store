@@ -3,6 +3,7 @@ import { Request, Response } from "express";
 
 import app from "./app";
 import connect from "./common/config/database";
+import { handleErrors } from "./common/middlewares/error";
 
 dotenv.config();
 
@@ -13,6 +14,8 @@ app.get("/health", (req: Request, res: Response): any => {
     data: null,
   });
 });
+
+app.use(handleErrors);
 
 app.use((req, res, _next) => {
   res.status(404).json({
