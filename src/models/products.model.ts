@@ -5,7 +5,7 @@ export interface IProduct extends Document {
   name: string;
   description?: string;
   price: number;
-  category: String;
+  category: string;
   owner: string;
   images: string[];
   reviews: IReview[];

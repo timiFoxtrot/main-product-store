@@ -3,7 +3,7 @@
       "target": "ES2020",
       "module": "commonjs",
       "lib": ["esnext", "dom"],
-      "types": ["reflect-metadata", "jest"],
+      // "types": ["reflect-metadata", "jest"],
       "sourceMap": true,
       "outDir": "./dist",
       "strict": true,
@@ -25,7 +25,8 @@
       "skipLibCheck": true,
       "stripInternal": true,
       "useUnknownInCatchVariables": false,
-      "noUnusedParameters": false
+      "noUnusedParameters": false,
+      "typeRoots": ["./src/types", "./node_modules/@types"]
   },
   "include": ["./src/**/*"],
   "exclude": ["node_modules", "./src/**/*.test.ts", "./src/**/*.spec.ts"]

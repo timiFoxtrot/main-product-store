@@ -1,9 +1,11 @@
 import dotenv from "dotenv";
 import { Request, Response } from "express";
-
 import app from "./app";
 import connect from "./common/config/database";
 import { handleErrors } from "./common/middlewares/error";
+import { userRouter } from "./routes/users.route";
+import { productRouter } from "./routes/products.route";
+import { categoryRouter } from "./routes/categories.route";
 
 dotenv.config();
 
@@ -14,6 +16,10 @@ app.get("/health", (req: Request, res: Response): any => {
     data: null,
   });
 });
+
+app.use("/users", userRouter);
+app.use("/products", productRouter);
+app.use("/categories", categoryRouter);
 
 app.use(handleErrors);
 
