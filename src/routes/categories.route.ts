@@ -19,7 +19,7 @@ categoryRouter.post(
 );
 categoryRouter.get(
   "/",
-  authenticate({ isAdmin: true }),
+  authenticate({ isAdmin: false }),
   categoryController.getCategories
 );
 categoryRouter.get(

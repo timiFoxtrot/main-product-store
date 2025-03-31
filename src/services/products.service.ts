@@ -34,8 +34,8 @@ export class ProductService {
     });
   }
 
-  async getAllProductsByUser(user: IUser) {
-    return this.productRepository.getAllProductsByUser(user);
+  async getAllProductsByUser(user: IUser, page: number, limit: number) {
+    return this.productRepository.getAllProductsByUser(user, page, limit);
   }
 
   async getProduct(id: string, user: IUser) {

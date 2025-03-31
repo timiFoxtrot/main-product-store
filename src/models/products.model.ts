@@ -36,10 +36,10 @@ const ProductSchema: Schema = new Schema<IProduct>(
     name: { type: String, required: true },
     description: { type: String, required: true },
     price: { type: Number, required: true },
-    category: { type: String, ref: "Category", required: true },
+    category: { type: String, ref: "Category", required: true, index: true },
     images: [String],
     reviews: [ReviewSchema],
-    owner: { type: String, ref: "User", required: true },
+    owner: { type: String, ref: "User", required: true, index: true },
   },
   {
     id: false,
@@ -50,6 +50,8 @@ const ProductSchema: Schema = new Schema<IProduct>(
     },
   }
 );
+
+ProductSchema.index({ owner: 1, category: 1 });
 
 const Product = model<IProduct>("Product", ProductSchema);
 export default Product;

@@ -56,7 +56,7 @@ productRouter.delete(
 );
 
 productRouter.patch(
-  "/add-images/:productId",
+  "/add-images/:id",
   authenticate({ isAdmin: false }),
   upload.array("files", 5),
   productController.addImages

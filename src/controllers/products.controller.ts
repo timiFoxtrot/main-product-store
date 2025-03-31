@@ -8,13 +8,11 @@ export class ProductController {
   createProduct = async (req: Request, res: Response, next: NextFunction) => {
     try {
       const result = await this.productService.create(req.body, req.user);
-      return res
-        .status(201)
-        .json({
-          status: "success",
-          message: "Product added successfully",
-          data: result,
-        });
+      return res.status(201).json({
+        status: "success",
+        message: "Product added successfully",
+        data: result,
+      });
     } catch (error) {
       logger.error(`ERROR CREATING PRODUCT:: ${error.message}`);
       res.status(error.statusCode || 500).json({
@@ -43,13 +41,11 @@ export class ProductController {
         minPrice: Number(minPrice),
         maxPrice: Number(maxPrice),
       });
-      return res
-        .status(200)
-        .json({
-          status: "success",
-          message: "Products fetched successfully",
-          data: result,
-        });
+      return res.status(200).json({
+        status: "success",
+        message: "Products fetched successfully",
+        data: result,
+      });
     } catch (error) {
       logger.error(`ERROR FETCHING PRODUCT:: ${error.message}`);
       res.status(500).json({
@@ -61,7 +57,15 @@ export class ProductController {
 
   getAllProductsByUser = async (req: Request, res: Response) => {
     try {
-      const result = await this.productService.getAllProductsByUser(req.user);
+      const { page, limit } = req.query as unknown as {
+        page: string;
+        limit: string;
+      };
+      const result = await this.productService.getAllProductsByUser(
+        req.user,
+        Number(page),
+        Number(limit)
+      );
       return res.status(200).json({
         status: "success",
         message: "Products fetched successfully",
@@ -140,7 +144,7 @@ export class ProductController {
   addImages = async (req: Request, res: Response) => {
     try {
       const user = req.user;
-      const productId = req.params.productId;
+      const productId = req.params.id;
       const files = req.files as any[];
 
       if (!files || files.length === 0) {

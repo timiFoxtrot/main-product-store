@@ -17,7 +17,7 @@ app.get("/health", (req: Request, res: Response): any => {
   });
 });
 
-app.use("/users", userRouter);
+app.use("/auth", userRouter);
 app.use("/products", productRouter);
 app.use("/categories", categoryRouter);
 

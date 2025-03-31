@@ -68,6 +68,7 @@ export class ProductRepository {
       })
       .skip(skip)
       .limit(limit)
+      .lean()
       .exec();
     const total = await Product.countDocuments();
     return {
@@ -79,7 +80,11 @@ export class ProductRepository {
     };
   }
 
-  async getAllProductsByUser(user: IUser) {
+  async getAllProductsByUser(user: IUser, page: number, limit: number) {
+    page = page || 1;
+    limit = limit || 5;
+    const skip = (page - 1) * limit;
+
     const products = await Product.find({ owner: user._id })
       .populate({
         path: "owner",
@@ -89,12 +94,23 @@ export class ProductRepository {
         path: "category",
         select: "name",
       })
+      .skip(skip)
+      .limit(limit)
+      .lean()
       .exec();
-    return products;
+    const total = await Product.countDocuments({ owner: user._id });
+
+    return {
+      total,
+      page,
+      limit,
+      totalPages: Math.ceil(total / limit),
+      data: products,
+    };
   }
 
   async getProduct(id: string, user: IUser) {
-    const product = await Product.findOne({ _id: id, owner: user._id });
+    const product = await Product.findOne({ _id: id, owner: user._id }).lean();
     if (!product) throw { message: "Product not found", statusCode: 404 };
     return product;
   }
@@ -153,7 +169,7 @@ export class ProductRepository {
     userObject: IUser
   ) {
     const { rating, comment } = reviewData;
-    const product = await Product.findById(productId);
+    const product = await Product.findById(productId).lean();
     if (!product) {
       throw new NotFoundError("Product not found");
     }
