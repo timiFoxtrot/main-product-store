@@ -12,7 +12,7 @@ export const createUserSchema = celebrate(
       name: Joi.string().required().trim(),
       email: Joi.string().email().required(),
       password: Joi.string().required(),
-      roles: Joi.any().forbidden(), // disallow setting roles via payload
+      roles: Joi.any().forbidden(),
     }),
   },
   {
@@ -25,13 +25,13 @@ export const createUserSchema = celebrate(
 export const updateUserSchema = celebrate(
   {
     [Segments.PARAMS]: Joi.object().keys({
-      id: Joi.string().required(), // assuming _id is a UUID (string)
+      id: Joi.string().required(),
     }),
     [Segments.BODY]: Joi.object().keys({
       name: Joi.string().optional().trim(),
       email: Joi.string().email().optional(),
       password: Joi.string().optional(),
-      roles: Joi.any().forbidden(), // roles cannot be updated via request payload
+      roles: Joi.any().forbidden(),
     }),
   },
   {
@@ -65,7 +65,7 @@ export const createProductSchema = celebrate(
 export const updateProductSchema = celebrate(
   {
     [Segments.PARAMS]: Joi.object().keys({
-      id: Joi.string().required(), // product id
+      id: Joi.string().required(),
     }),
     [Segments.BODY]: Joi.object().keys({
       name: Joi.string().optional().trim(),
@@ -74,6 +74,21 @@ export const updateProductSchema = celebrate(
       category: Joi.string().optional().trim(),
       owner: Joi.string().optional().trim(),
       images: Joi.array().items(Joi.string().uri()).optional(),
+    }),
+  },
+  {
+    abortEarly: false,
+  }
+);
+
+export const reviewProductSchema = celebrate(
+  {
+    [Segments.PARAMS]: Joi.object().keys({
+      id: Joi.string().required(),
+    }),
+    [Segments.BODY]: Joi.object().keys({
+      rating: Joi.number().min(1).max(5).required(),
+      comment: Joi.string().optional().trim(),
     }),
   },
   {

@@ -1,3 +1,4 @@
+import { ForbiddenError } from "../common/errors/ForbiddenError";
 import { NotFoundError } from "../common/errors/NotFoundError";
 import Product, { IProduct } from "../models/products.model";
 import { IUser } from "../models/users.model";
@@ -59,7 +60,7 @@ export class ProductRepository {
     const products = await Product.find(filter)
       .populate({
         path: "owner",
-        select: "name email", 
+        select: "name email",
       })
       .populate({
         path: "category",
@@ -80,7 +81,14 @@ export class ProductRepository {
 
   async getAllProductsByUser(user: IUser) {
     const products = await Product.find({ owner: user._id })
-      .populate("owner", "-password")
+      .populate({
+        path: "owner",
+        select: "name email",
+      })
+      .populate({
+        path: "category",
+        select: "name",
+      })
       .exec();
     return products;
   }
@@ -114,7 +122,11 @@ export class ProductRepository {
     return deletedProduct;
   }
 
-  async addImagesToProduct(files: MulterFile[], productId: string, userId: string) {
+  async addImagesToProduct(
+    files: MulterFile[],
+    productId: string,
+    userId: string
+  ) {
     cloudinary.v2.config({
       cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
       api_key: process.env.CLOUDINARY_API_KEY,
@@ -133,5 +145,33 @@ export class ProductRepository {
     await product.save();
 
     return imageUrls;
+  }
+
+  async addProductReview(
+    reviewData: { rating: number; comment: string },
+    productId: string,
+    userObject: IUser
+  ) {
+    const { rating, comment } = reviewData;
+    const product = await Product.findById(productId);
+    if (!product) {
+      throw new NotFoundError("Product not found");
+    }
+
+    if (product.owner === userObject._id) {
+      throw new ForbiddenError("You cannot review your own product");
+    }
+
+    const review = {
+      user: userObject.name,
+      rating,
+      comment,
+      createdAt: new Date(),
+    };
+
+    product.reviews.push(review);
+    await product.save();
+
+    return product;
   }
 }

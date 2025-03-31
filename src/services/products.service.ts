@@ -53,4 +53,8 @@ export class ProductService {
   async addImagesToProduct(files: any[], productId: string, userId: string) {
     return this.productRepository.addImagesToProduct(files, productId, userId)
   }
+
+  async addProductReview(reviewData: {rating: number, comment: string}, productId: string, user: IUser) {
+    return this.productRepository.addProductReview(reviewData, productId, user)
+  }
 }
