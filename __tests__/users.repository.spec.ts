@@ -101,4 +101,27 @@ describe("UserRepository", () => {
       userRepository.login({ email: userData.email, password: "wrongpassword" })
     ).rejects.toThrow("Invalid credentials");
   });
+
+  test("should return a list of users without passwords", async () => {
+    const usersData = [
+      { name: "User One", email: "user1@example.com", password: "password123" },
+      { name: "User Two", email: "user2@example.com", password: "password123" },
+    ];
+  
+    // Hash passwords before saving
+    for (const user of usersData) {
+      user.password = await bcrypt.hash(user.password, 10);
+      await User.create(user);
+    }
+  
+    const users = await userRepository.getUsers();
+  
+    expect(users).toHaveLength(2);
+    users.forEach((user, index) => {
+      expect(user).toHaveProperty("_id");
+      expect(user).toHaveProperty("email", usersData[index].email);
+      expect(user).not.toHaveProperty("password");
+    });
+  });
+  
 });
