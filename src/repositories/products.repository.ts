@@ -15,7 +15,11 @@ export class ProductRepository {
       product.category
     );
     if (!existingCategory) throw new NotFoundError("category not found");
-    const newProduct = new Product({ ...product, owner: userId });
+    const newProduct = new Product({
+      ...product,
+      category: existingCategory._id,
+      owner: userId,
+    });
     return await newProduct.save();
   }
 
@@ -169,7 +173,7 @@ export class ProductRepository {
     userObject: IUser
   ) {
     const { rating, comment } = reviewData;
-    const product = await Product.findById(productId).lean();
+    const product = await Product.findById(productId);
     if (!product) {
       throw new NotFoundError("Product not found");
     }
