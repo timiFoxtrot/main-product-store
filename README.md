@@ -165,6 +165,12 @@ To run using Docker Compose, use:
 docker-compose up --build
 ```
 
+To stop the container, use:
+
+```
+docker-compose down
+```
+
 The API will be available at http://localhost:4000.
 
 ### Scripts
@@ -223,4 +229,5 @@ A seed script is provided to create an initial admin user. To seed the admin use
 ```
 npm run seed-admin
 ```
+
 This script connects to the MongoDB database, checks if an admin user exists (based on the provided ADMIN_EMAIL), and creates one if it does not.

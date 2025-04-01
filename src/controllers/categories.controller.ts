@@ -50,7 +50,7 @@ export class CategoryController {
       const categories = await this.categoryService.getAllCategories();
       res.json({
         status: "success",
-        message: "Categories added successfully",
+        message: "Categories fetched successfully",
         data: categories,
       });
     } catch (error: any) {

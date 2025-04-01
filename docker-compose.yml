@@ -7,5 +7,7 @@ services:
       - 4000:3333
     volumes:
       - .:/usr/src/app
+      - /usr/src/app/dist # Prevent overwriting the built files
+
     env_file:
       - .env
