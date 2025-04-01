@@ -28,4 +28,9 @@ export class UserRepository {
     });
     return token;
   }
+
+  async getUsers(): Promise<Partial<IUser>[]> {
+    const users = await User.find().select("-password");
+    return users.map((user) => user.toObject());
+  }
 }

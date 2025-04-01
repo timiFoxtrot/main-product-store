@@ -11,4 +11,8 @@ export class UserService {
   async login(email: string, password: string) {
     return this.userRepository.login({ email, password });
   }
+
+  async getUsers() {
+    return this.userRepository.getUsers()
+  }
 }

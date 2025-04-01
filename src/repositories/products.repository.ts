@@ -182,6 +182,15 @@ export class ProductRepository {
       throw new ForbiddenError("You cannot review your own product");
     }
 
+    // Check if the user has already reviewed the product
+    const existingReview = product.reviews.find(
+      (review) => review.user === userObject.name
+    );
+
+    if (existingReview) {
+      throw new ForbiddenError("You have already reviewed this product");
+    }
+
     const review = {
       user: userObject.name,
       rating,
