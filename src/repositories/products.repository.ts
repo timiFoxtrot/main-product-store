@@ -74,7 +74,7 @@ export class ProductRepository {
       .limit(limit)
       .lean()
       .exec();
-    const total = await Product.countDocuments();
+    const total = await Product.countDocuments(filter);
     return {
       total,
       page,

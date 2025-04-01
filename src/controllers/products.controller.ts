@@ -48,7 +48,7 @@ export class ProductController {
       });
     } catch (error) {
       logger.error(`ERROR FETCHING PRODUCT:: ${error.message}`);
-      res.status(500).json({
+      res.status(error.statusCode || 500).json({
         status: "error",
         message: error.message,
       });
@@ -73,7 +73,7 @@ export class ProductController {
       });
     } catch (error) {
       logger.error(`ERROR FETCHING PRODUCTS:: ${error.message}`);
-      res.status(400).json({
+      res.status(error.statusCode || 500).json({
         status: "error",
         message: error.message,
       });
@@ -93,7 +93,7 @@ export class ProductController {
       });
     } catch (error) {
       logger.error(`ERROR FETCHING PRODUCT:: ${error.message}`);
-      res.status(error.statusCode || 400).json({
+      res.status(error.statusCode || 500).json({
         status: "error",
         message: error.message,
       });
@@ -114,7 +114,7 @@ export class ProductController {
       });
     } catch (error) {
       logger.error(`ERROR UPDATING PRODUCTS:: ${error.message}`);
-      res.status(400).json({
+      res.status(error.statusCode || 500).json({
         status: "error",
         message: error.message,
       });
@@ -134,7 +134,7 @@ export class ProductController {
       });
     } catch (error) {
       logger.error(`ERROR DELETING PRODUCTS:: ${error.message}`);
-      res.status(500).json({
+      res.status(error.statusCode || 500).json({
         status: "error",
         message: error.message,
       });
@@ -162,7 +162,7 @@ export class ProductController {
       });
     } catch (error) {
       logger.error(`ERROR UPLOADING IMAGES:: ${error.message}`);
-      res.status(500).json({
+      res.status(error.statusCode || 500).json({
         status: "error",
         message: error.message,
       });
@@ -185,7 +185,7 @@ export class ProductController {
         .json({ status: "success", message: "Review submitted", data: result });
     } catch (error) {
       logger.error(`ERROR ADDING PRODUCT REVIEW:: ${error.message}`);
-      res.status(500).json({
+      res.status(error.statusCode || 500).json({
         status: "error",
         message: error.message,
       });
