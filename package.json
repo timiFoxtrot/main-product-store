@@ -5,6 +5,7 @@
   "main": "index.js",
   "scripts": {
     "start": "npx tsc & ts-node ./src/index.ts",
+    "start:prod": "npm start && npm run seed-admin",
     "start:dev": "npx tsc & ts-node-dev ./src/index.ts",
     "build": "npx tsc -b",
     "test": "jest",
