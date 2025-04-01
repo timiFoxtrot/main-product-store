@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "start": "npx tsc & ts-node ./src/index.ts",
-    "start:prod": "npx tsc & ts-node dist/seedAdmin.js & ts-node ./dist/index.js",
+    "start:prod": "npx tsc && node dist/seedAdmin.js && node dist/index.js",
     "start:dev": "npx tsc & ts-node-dev ./src/index.ts",
     "build": "npx tsc -b",
     "test": "jest",
